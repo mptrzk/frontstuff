@@ -1,0 +1,121 @@
+<head>
+  <style>
+
+body {
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+button {
+  font-size: 20px;
+}
+
+td {
+  border: 0.0000001px solid grey;
+  text-align: center;
+  vertical-align: middle;
+  font-family: sans-serif;
+  font-size: 40px; /*why it stretches the cell? -- user agent stylesheet adds some padding n' stuff*/
+  height: 50px;
+  width: 50px;
+  /*float: left;*/
+}
+
+  </style>
+  <script type='module'>
+
+import { h, render } from 'https://cdn.skypack.dev/preact';
+import { useReducer } from 'https://cdn.skypack.dev/preact/hooks';
+//import * as Htm from 'https://cdn.skypack.dev/htm';
+import htm from 'https://cdn.skypack.dev/htm';
+
+//const ht = Htm.bind(h);
+const ht = htm.bind(h);
+
+
+const checkHalfLine = (state, iRow, iCol, [dirX, dirY], count=0) => {
+  const {board, next} = state;
+  return board?.[iRow]?.[iCol][0] === next
+         ? checkHalfLine(state,
+                         iRow + dirX,
+                         iCol + dirY,
+                         [dirX, dirY],
+                         count + 1)
+         : count;
+}
+
+const checkLine = (state, iRow, iCol, [dirX, dirY]) => {
+  return checkHalfLine(state, iRow, iCol, [dirX, dirY])
+         + checkHalfLine(state, iRow, iCol, [-dirX, -dirY])
+         - 1;
+}
+
+const checkWinner = (state, iRow, iCol) => {
+  const {board, next} = state;
+  const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
+  const streak = Math.max(...dirs.map(dir =>
+    checkLine(state, iRow, iCol, dir)));
+  return (streak >= 3) ? next : null;
+}
+
+//v action as an array?
+const reducer = (state, action) => {
+  if (action === 'reset') return reset(15, 15); 
+  const [iRow, iCol] = action;
+  if (!state.winner && state.board[iRow][iCol][0] === '') {
+    let newBoard = state.board;
+    newBoard[iRow][iCol] = [state.next]; 
+    const newWinner = checkWinner(state, iRow, iCol);
+    if (newWinner) newBoard[iRow][iCol][1] = 'red';
+    return {
+      board: newBoard,
+      next: state.next === 'X' ? 'O' : 'X',
+      winner: newWinner
+    }; 
+  }
+  return state;
+}
+
+const reset = (w, h) => ({
+  board: Array.from(Array(h), () => Array(w).fill(['', 'black'])),
+  next: 'X',
+  winner: null,
+});
+
+const Foo = props => {
+  const [state, dispatch] = useReducer(reducer, reset(15, 15));
+  return ht`
+        next player: ${state.next}
+        <table>
+          ${state.board.map((row, iRow) => ht`
+            <tr>
+              ${row.map((square, iCol) => ht`
+                <td onclick=${() => dispatch([iRow, iCol])}
+                    style='color: ${square[1]}'>
+                  ${square[0]}
+                </td>
+              `)}
+            </tr>
+          `)}
+        </table>
+        ${state.winner
+          ? ht`
+              winner: ${state.winner}
+              <br />
+              <button onclick=${() => dispatch('reset')}>reset</button>
+            `
+          : ''
+         }
+    `;
+}
+
+render(ht`<${Foo} />`, document.body);
+
+  </script>
+</head>
+<body>
+</body>

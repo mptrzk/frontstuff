@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel='stylesheet' type='text/css' href='style.css'> 
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <script type='text/babel'>
+
+function Square(props) {
+    return (
+      <button className="square" onClick={() => props.onClick()}>
+        {props.foo}
+      </button>
+    );
+}
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    const w = parseInt(this.props.w);
+    const h = parseInt(this.props.h);
+    this.reset(w, h);
+  }
+
+  reset(w, h) {
+    const state = {
+      squares: Array.from(Array(h), () => Array(w).fill('')), //TODO explain 
+      next: 'X',
+      winner: null
+    }
+    if (this?.state) this.setState(state);
+    else this.state = state;
+  }
+  
+  countLine(row, col, dirX, dirY) {
+    const countHalfLine = (row, col, dirX, dirY) => {
+      const squares = this.state.squares;
+      const [w, h] = [squares.length, squares[0].length];
+      let count = 0;
+      while (squares?.[row]?.[col] == this.state.next) {
+         count++;
+         row += dirX;
+         col += dirY;
+      }
+      return count;
+    }
+    return countHalfLine(row, col, dirX, dirY) + countHalfLine(row, col, -dirX, -dirY) - 1;
+  }
+
+  checkWinner(row, col) {
+    const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
+    const count = Math.max(...dirs.map(([x, y]) => this.countLine(row, col, x, y)));
+    return count >= 5 ? this.state.next : null;
+  }
+
+  handleClick(row, col) {
+    const squares = this.state.squares.slice();
+    if (squares[row][col] !== '' || this.state.winner) return;
+    squares[row][col] = this.state.next;
+    this.setState({
+      squares: squares,
+      next: (this.state.next === 'X' ? 'O' : 'X'),
+      winner: this.checkWinner(row, col)
+    });
+  }
+
+  renderSquare(row, col) {
+    return <Square foo={this.state.squares[row][col]} 
+                   onClick={() => this.handleClick(row, col)}
+                   key={col}
+           />; //explain why closures are cool
+  }
+
+  render() {
+    const status = `Next player: ${this.state.next}`;
+    return (
+      <div>
+        <div className="status">{status}</div>
+        {this.state.squares.map((row, row_idx) => (
+          <div className="board-row" key={row_idx}>
+            {row.map((col, col_idx) => this.renderSquare(row_idx, col_idx))}
+          </div>
+        ))}
+        {this.state.winner ? (
+          <div>
+            {`winner: ${this.state.winner}`}
+            <br/>
+            <button onClick={() => this.reset(this.props.w, this.props.h)}>reset</button>
+          </div> //passing fn as prop - is it text, what about numbers?
+        ) : null}
+      </div>
+    );
+  }
+}
+
+class Game extends React.Component {
+  render() {
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board w={21} h={21}/>
+        </div>
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+// ========================================
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Game />);
+
+    </script>
+    <div id="root">aaa</div>
+  </body>
+</html>

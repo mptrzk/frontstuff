@@ -1,0 +1,25 @@
+<script type="module">
+  //import { h, render } from 'https://unpkg.com/preact@latest?module';
+  import { h, render } from 'https://cdn.skypack.dev/preact';
+  //import { useState } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
+  import { useState } from 'https://cdn.skypack.dev/preact/hooks';
+  //import { h, Component, render } from './libs/preact.js';
+  //import htm from 'https://unpkg.com/htm?module';
+  import htm from 'https://cdn.skypack.dev/htm';
+  //import  htm from './libs/htm.js';
+
+  const ht = htm.bind(h);
+
+  
+  const App = props => {
+    const [num, setBishops] = useState(5);
+    return ht`
+      <h1>Archbishop ${num}!</h1>
+      <input onkeydown=${() => 0}></input>
+    `;
+  }
+  //^^ is that a lambda or an object?
+  //array as a prop object?
+
+  render(App, document.body);
+</script>

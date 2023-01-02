@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel='stylesheet' type='text/css' href='style.css'> 
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <script type='text/babel'>
+
+function Square(props) {
+    return (
+      <button className="square" onClick={() => props.onClick()}>
+        {props.foo}
+      </button>
+    );
+}
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(''),
+      next: 'X'
+    }
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    if (squares[i] !== '') return;
+    squares[i] = this.state.next;
+    this.setState({
+      squares: squares,
+      next: (this.state.next === 'X' ? 'O' : 'X')
+    });
+  }
+
+  renderSquare(i) {
+    return <Square foo={this.state.squares[i]} onClick={() => this.handleClick(i)} />; //explain why closures are cool
+  }
+
+  render() {
+    const status = `Next player: ${this.state.next}`;
+
+    return (
+      <div>
+        <div className="status">{status}</div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+
+class Game extends React.Component {
+  render() {
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board />
+        </div>
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+// ========================================
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Game />);
+
+    </script>
+    <div id="root">aaa</div>
+  </body>
+</html>

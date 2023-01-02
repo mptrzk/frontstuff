@@ -1,0 +1,78 @@
+<head>
+  <style>
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 0.0000001px solid grey;
+  text-align: center;
+  vertical-align: middle;
+  font-family: sans-serif;
+  font-size: 45px; /*why it stretches the cell*/
+  height: 50px;
+  width: 50px;
+  /*float: left;*/
+}
+button {
+  height: 50px;
+  width: 50px;
+  /*border: 2px solid grey;*/
+}
+
+  </style>
+  <script type='module'>
+
+import { h, render } from 'https://cdn.skypack.dev/preact';
+import { useState } from 'https://cdn.skypack.dev/preact/hooks';
+//import * as Htm from 'https://cdn.skypack.dev/htm';
+import htm from 'https://cdn.skypack.dev/htm';
+
+//const ht = Htm.bind(h);
+const ht = htm.bind(h);
+
+const reset = (w, h) => ({
+  board: Array.from(Array(h), () => Array(w).fill('')),
+  next: 'X',
+  winner: null,
+});
+
+const reducer = (state, action) => {
+  return {
+    board: state.board,
+    next: state.next,
+    winner: state.winner
+  }; 
+}
+
+const Foo = props => {
+  const [state, update] = useState('');
+  return ht`
+    <table>
+      <tr>
+        <td onclick=${() => update('X')}>${state}</td>
+        <td>X</td>
+        <td>X</td>
+      </tr>
+      <tr>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+      </tr>
+      <tr>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+      </tr>
+    </table>
+    ${state.winner ? `winner: ${state.winner}` : ''}
+    `;
+}
+
+render(ht`<${Foo} />`, document.body);
+
+  </script>
+</head>
+<body>
+</body>
