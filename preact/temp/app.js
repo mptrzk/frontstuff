@@ -30,10 +30,12 @@ const scales = [
 ];
 
 const Temp = props => {
-  const t = props.t;
+  const input = useRef(null); //why ref hook returns an object with single property?
   const {name, to, from} = props.scale;
+  const t = props.t;
+  const val = props.selected === name ? input.current?.value : to(t); 
   const inpf = e => {
-    if (props.selected === name){
+    if (props.selected === name) {
       props.send(['t', from(parseFloat(e.target.value))])
     }
   }
@@ -44,10 +46,12 @@ const Temp = props => {
   <div class='temp'>
     ${`${name}: `}
     <br/>
-    <input type='text' value=${props.selected ? to(t)} onclick=${sf} oninput=${inpf}><//>
+    <input ref=${input} type='text' value=${val} onfocus=${sf} oninput=${inpf}><//>
   <//>
   `;///^^^ded
 }
+//will I unlearn stuff by  rewriting?
+//bugriddnen switching to reducer
 
 const init = () => {
   return {
@@ -61,10 +65,10 @@ const init = () => {
 //  they ain't reactive
 //  a reducer might calculate something as well
 const update = (s, msg) => {
-  const [type, val] = msg;
+  const [type, val] = msg; //silent bugs were here
   const _s = {...s};
   if (type == 't') {
-    _s.temp = val;
+    _s.t = val; //and here
   }
   if (type == 'selected') {
     _s.selected = val;
@@ -83,6 +87,9 @@ const App = props => {
 
 render(ht`<${App}/>`, document.body);
 
+
+//is infinite loop with onfocused event caused by 'alert'?
+
 //do hooks get resolved by abusing the commit queue?
 //how hooks know what calls them
 //are they function-bound?
@@ -90,3 +97,14 @@ render(ht`<${App}/>`, document.body);
 //do components get identified by the key passed to them?
 //
 //does it get re-render when state changes but the given prop doesn'to?
+//
+//is re-rendering supertree cheaper?
+//
+//arrays as Map keys
+//  they have to be immutable arrays
+//explicit update
+//
+//does reducer 'dispatch' dispatch an event?
+//is elm faster than preact?
+//"optimizing elm only touches view code"
+//the reducer check

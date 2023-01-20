@@ -1,0 +1,80 @@
+==================================================
+;GLOSSARY
+
+vnode - a data structure that's co 
+component - 
+rendering -
+signal - 
+diffing -
+bubbling -
+
+is glossary even that useful?
+  it probably is if ambiguities occur
+
+==================================================
+;SIGNAL ARCHITECTURE
+
+force update argument
+
+signal subscribtion as decorator?
+
+vnode as publisher to its children
+  but vnode has be rendered too
+    signals with side effects?
+      isn't that overcomplicated?
+
+explicit signal call
+
+==================================================
+;VIEW-MODEL ARCHITECTURE
+
+counter instead of queue?
+
+to make it strictly VM, render sets up message queue
+  can't it just dispatch an event?
+    not quite?
+    test how events work
+
+==================================================
+;JS TANGENTS
+
+events
+  events are for doing stuff after thing that's done now finishes
+    rly?
+  bubbling
+    dispatching the same event to the parent?
+
+event vs 
+
+==================================================
+;LITTLE-VDOM
+
+how it deals with state and update
+  line 35
+    no, it deals with components here
+what's "&&" for in line 11
+
+
+diffing props
+  doesn't preact do it too?
+    I thought it diffed the vnodes
+      based on my experiment with preact
+
+why are children added to props?
+
+other vdoms seemed to have a commit queue
+
+why it appends to dom the way it does?
+
+==================================================
+;UNCATEGORIZED
+
+[move]
+  </> in htm?
+
+setting meaningless dom attributes
+
+wild idea
+  reactive vdom viewer
+
+code styling - more new lines between things related to a single component at the top level

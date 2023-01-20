@@ -105,6 +105,13 @@ what setState actually does
 ==================================================
 ;PREACT
 
+glossary
+  component
+  prop
+  vdom
+  htm
+  hyperscript
+
 explain reactivity and update propagation
 
 hyperscript
@@ -127,6 +134,24 @@ variadic function that prints its args
 
 reducer and other hooks
 how do hooks work anyway
+
+write as hyperscript
+  [move to frontcomp]
+
+"only stuff that changes should be passed as props"
+  rly?
+  what about square indices in tic-tac-toe?
+
+classes vs closures
+  are closures less efficient?
+  does V8 handle that?
+
+
+does an element get re-rendered when its state changes?
+
+leaky abstractions?
+
+how slow is htm
 
 
 ==================================================
