@@ -28,6 +28,9 @@ explicit signal call
 ==================================================
 ;VIEW-MODEL ARCHITECTURE
 
+seems meh for small state like togglable tree views
+  is there a good way to solve this?
+
 counter instead of queue?
 
 to make it strictly VM, render sets up message queue
@@ -47,7 +50,11 @@ events
 event vs 
 
 ==================================================
+;SMALL DOM LIBRARIES
+
+=========================
 ;LITTLE-VDOM
+
 
 how it deals with state and update
   line 35
@@ -61,20 +68,67 @@ diffing props
       based on my experiment with preact
 
 why are children added to props?
+  you can change the component's children and it should update
+  the children are rendered before it
 
 other vdoms seemed to have a commit queue
 
 why it appends to dom the way it does?
 
+do fragments add anything to dom here?
+
+line 20 - does this do anything?
+
+does it work with numbers, etc?
+  yes, it does
+
+doesn't it do way too many dom updates?
+
+are invisible dom attachments cheap?
+  benchmark
+    attach and detach node invisibly 
+
+does replaceChildren delete the replaced?
+
+=========================
+;HUNDRED
+
+no components?
+  in elm components are just functions
+
+
 ==================================================
 ;UNCATEGORIZED
 
+components returning multiple vnodes
+
+with expanding components there would be more vnodes than dom elements
+why make component-vnodes?
+  state and stuff
+
+attaching stuff lower down eliminates the need to concatenate arrays
+  but isn't concatenating arrays cheaper?
+    is attaching stuff lower down expensive?
+      it should be AFAIK
+      it shouldn't matter if the top-level node is detached AFAIK 
+
+handling fragments within fragments
+
+each component has a vnode
+fragment is a component
+fragment adds no vnodes
+
+
+handling children
+  vnode -> just insert
+  array -> insert a fragment
+  other -> insert text
+
+setting attribs like normal object properties?
+
 [move]
   </> in htm?
-
-setting meaningless dom attributes
+  code styling - more new lines between things related to a single component at the top level
 
 wild idea
   reactive vdom viewer
-
-code styling - more new lines between things related to a single component at the top level

@@ -1,0 +1,37 @@
+<body>
+  <script>
+    function topDownEmptyAttached() {
+      let el = document.body;
+      for (let i=0; i<1916; i++) {
+        let _el = document.createElement('div');
+        el.appendChild(_el);
+        el = _el; 
+      }
+      //does the stuff get slow when this gets attached?
+      //console.log instead
+      el.appendChild(document.createTextNode('top down empty attached'));
+    }
+
+    function flatEmptyAttached() {
+      for (let i=0; i<50000; i++) {
+        document.body.appendChild(document.createElement('div'));
+      }
+      document.body.appendChild(document.createTextNode('flat attached'));
+    }
+
+    function topDownStuffAttached() {
+    }
+
+    function foo() {
+      console.log('foo');
+    }
+
+    function justCreating() {
+      el.appendChild(document.createTextNode('top down empty attached'));
+    }
+
+    //topDownEmptyAttached();
+    flatEmptyAttached();
+    foo();
+  </script>
+</body>

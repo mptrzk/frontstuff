@@ -1,0 +1,39 @@
+flat empty attached
+  100000 divs
+    script - 416ms
+    recalculate style - 986ms
+    pre-paint - 286ms
+    paint - 73ms
+    layout - 1.73s
+    frame - 350ms
+      that's pre-paint and paint
+      does it change if I scroll?
+    schedule style recalculation - 80ms
+      not always happens
+  50000 divs
+    script - 300ms
+      weird pauses in the function execution graph
+        function wrapped in anonymous function
+          177ms
+    recalculate style - 538ms
+    layout - 869ms
+    pre-paint - 145ms
+    paint - 39ms
+  looks linear
+    
+just creating elements
+attaching elements just to the top node
+replacing top node with pre-rendered tree
+replacing part of detached tree
+
+
+
+why so few calls in the profiler
+
+does dom update before the function exits?
+
+do results vary wildly when repeating those benchmarks?
+
+hidden stuff
+
+browser tasks

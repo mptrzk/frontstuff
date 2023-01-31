@@ -1,19 +1,12 @@
 
 import htm from 'https://cdn.skypack.dev/htm';
 
+
 const h = (type, props, ...children) => {
-  const el = document.createElement(type);
-  //TODO sanitize props
-  if (props) Object.entries(props).map(([k, v]) => {
-    el.setAttribute(k, v);
-    //TODO setting ref
-  });
-  const childNodes = children.map((c, i) => {
-    if (typeof(c) === 'string') {
-      el.appendChild(document.createTextNode(c));
-    } else el.insertBefore(c, el.children[i + 1]); 
-  });
-  return el;
+  return {
+    type: type,
+    props: {children: children, ...props},
+  }
 }
 
 const ht = htm.bind(h);
@@ -25,15 +18,23 @@ document.body.appendChild(
 );
 */
 
-const render = (els, node) => {
-  const elArr = Array.isArray(els) ? els : [els];
-  node.replaceChildren(...elArr);
+const diff = (vnode, dom) => {
+  if (Array.isArray(vnode)) {
+    dom.replaceChildren(...vnode.map(diff, dom)); 
+  }
 }
 
+const render = (vnode, dom) => {
+}
+
+//testing on just string?
+/* 
+ * chi
+*/
 render(ht`
   <div>
     <h1 style='color:green'>
-      foo
+      ${ht`foo`}
     </>
     <b>bar</>
     <u>baz</>
