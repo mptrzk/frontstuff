@@ -1,5 +1,6 @@
 <body>
   <script>
+    //TODO iterate stuff that breaks
     function topDownEmptyAttached() {
       let el = document.body;
       for (let i=0; i<1916; i++) {
@@ -7,31 +8,33 @@
         el.appendChild(_el);
         el = _el; 
       }
-      //does the stuff get slow when this gets attached?
-      //console.log instead
-      el.appendChild(document.createTextNode('top down empty attached'));
+      //el.appendChild(document.createTextNode('top down empty attached'));
     }
 
     function flatEmptyAttached() {
-      for (let i=0; i<50000; i++) {
+      document.body.appendChild(document.createTextNode('foo'));
+      for (let i=0; i<100000; i++) {
         document.body.appendChild(document.createElement('div'));
       }
-      document.body.appendChild(document.createTextNode('flat attached'));
+      //document.body.appendChild(document.createTextNode('flat attached'));
     }
 
     function topDownStuffAttached() {
     }
 
-    function foo() {
-      console.log('foo');
+
+    function justCreatingText() {
+      for (let i=0; i<1e7; i++) {
+        document.createTextNode('foo');
+      }
+    }
+    function justCreatingDivs() {
+      for (let i=0; i<1e7; i++) {
+        document.createElement('div');
+      }
     }
 
-    function justCreating() {
-      el.appendChild(document.createTextNode('top down empty attached'));
-    }
-
-    //topDownEmptyAttached();
     flatEmptyAttached();
-    foo();
+    //flatEmptyHiddenAttached();
   </script>
 </body>

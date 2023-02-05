@@ -1,7 +1,7 @@
 ==================================================
 ;GLOSSARY
 
-vnode - a data structure that's co 
+vnode - a data structure that corresponds to a DOM element (or a component?) 
 component - 
 rendering -
 signal - 
@@ -10,6 +10,11 @@ bubbling -
 
 is glossary even that useful?
   it probably is if ambiguities occur
+
+==================================================
+;WHY?
+
+So in vanilla JS you can modify DOM
 
 ==================================================
 ;SIGNAL ARCHITECTURE
@@ -132,3 +137,84 @@ setting attribs like normal object properties?
 
 wild idea
   reactive vdom viewer
+
+
+
+
+So what am I trying to do anyway?
+I'm trying to find out what takes so long?
+Does anything take long?
+Imagine somebody said "naah, it's all negligible, you can re-render the whole dom after each change and it would be OK"
+Whatever dude, just do it the easiest way until it's slow
+
+what's style recomputation anyway
+how is it different from layout
+
+or write a browser!
+it's just text and boxes
+
+but I wanna have a cool demos 
+
+
+so diffing can occur on 2 levels
+before calling components
+before updating dom
+preact doesn't seem to diff before updating components
+
+I don't like hideous code
+It's different when ugly code is fundamentally easier to write
+
+then there are preact signals
+isn't this whtat the browser should be doing anyway?
+
+web app is portable sandboxed program
+web browser is an OS with a standard library for IO and rendering multimedia
+meh...
+another way - how it emerged
+documents, scripting, other multimedia
+vector graphics
+
+components in reactish frameworks
+  their children and the results
+
+is stuff like absolute position in calculated style?
+I was doing those benchmarks because I wanted to know what's actually slow
+
+what if the two levels of diffing are combined?
+  a fustercluck?
+  plenty o' trees
+
+why have components when you have only 2nd level diffing?
+  for fragments?
+    why not just use lists?
+
+why am I trying to write a vdom?
+because I didn't know what I was doing 
+...
+I wanna know If I'm doing an actual workaround or just LARPng
+
+
+
+the stupidest way to do it is just returning strings and parsing it all as HTML at the end
+
+so you want a thing that manages a part of dom to update it
+but you might want to update only a small bit
+
+recursive flattening
+
+the weird problem that would be solved by lisp's quasiquote with spread
+  that's for components and stuff, leave it for now
+
+where do old vnodes go?
+
+let's try the elmish way first
+
+why diffing is a thing
+  because you don't call "render" normally
+  because changing dom triggers re-rendering each time
+    or rather it triggers a single re-render
+
+is that element-level diffing just implementing a missing functionality of DOM API?
+why is this a thing? browser doesn't do rendering right away anyway?
+
+benchmark attaching flat off screen
