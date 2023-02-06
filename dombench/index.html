@@ -1,9 +1,20 @@
 <body>
   <script>
-    //TODO iterate stuff that breaks
-    function topDownEmptyAttached() {
-      let el = document.body;
-      for (let i=0; i<1916; i++) {
+    function bottomUp() {
+      let el = document.createElement('div');
+      for (let i=0; i<1000; i++) {
+        let _el = document.createElement('div');
+        _el.appendChild(el);
+        el = _el;
+      }
+      document.body.appendChild(el);
+    }
+
+    function topDownEmptyBefore() {
+      let root = document.createElement('div');
+      document.body.appendChild(root);
+      let el = root;
+      for (let i=0; i<1000; i++) {
         let _el = document.createElement('div');
         el.appendChild(_el);
         el = _el; 
@@ -11,15 +22,36 @@
       //el.appendChild(document.createTextNode('top down empty attached'));
     }
 
-    function flatEmptyAttached() {
-      document.body.appendChild(document.createTextNode('foo'));
-      for (let i=0; i<100000; i++) {
-        document.body.appendChild(document.createElement('div'));
+    function topDownEmptyAfter() {
+      let root = document.createElement('div');
+      let el = root;
+      for (let i=0; i<1000; i++) {
+        let _el = document.createElement('div');
+        el.appendChild(_el);
+        el = _el; 
       }
-      //document.body.appendChild(document.createTextNode('flat attached'));
+      document.body.appendChild(root);
+      //el.appendChild(document.createTextNode('top down empty attached'));
     }
 
-    function topDownStuffAttached() {
+
+    function flatEmptyBefore() {
+      let root = document.createElement('div');
+      document.body.appendChild(root);
+      root.appendChild(document.createTextNode('foo'));
+      for (let i=0; i<100000; i++) {
+        root.appendChild(document.createElement('div'));
+      }
+    }
+
+    function flatEmptyAfter() {
+      let root = document.createElement('div');
+      root.appendChild(document.createTextNode('foo'));
+      for (let i=0; i<100000; i++) {
+        root.appendChild(document.createElement('div'));
+      }
+      document.body.appendChild(root);
+      //document.body.appendChild(document.createTextNode('flat attached'));
     }
 
 
@@ -34,7 +66,12 @@
       }
     }
 
-    flatEmptyAttached();
-    //flatEmptyHiddenAttached();
+    //bottomUp();
+
+    //topDownEmptyAfter();
+    topDownEmptyBefore();
+
+    //flatEmptyBefore();
+    //flatEmptyAfter();
   </script>
 </body>
