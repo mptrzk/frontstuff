@@ -26,7 +26,6 @@ function render(x, dom) {
   }
 }
 
-
 function display() {
   const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+state));
   const ret =  
@@ -36,6 +35,9 @@ function display() {
         ['input', {value: state}],
         ['input', {type: 'button', value: '+', onclick: inc}],
       ],
+      ['div', {style:'overflow: scroll; white-space: nowrap; width: 200px'},
+        `l${'o'.repeat(100)}ng text`
+      ],
       (state % 2) ? 'odd' : ['b', 'even'],
       ['table',
         ...foo.map(row =>
@@ -43,7 +45,8 @@ function display() {
             ...row.map(col => ['td', col])
           ]
         ), 
-      ]
+      ],
+      ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `]),
     ];
   document.body.replaceChildren();
   render(ret, document.body);

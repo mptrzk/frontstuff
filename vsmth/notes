@@ -210,6 +210,10 @@ the weird problem that would be solved by lisp's quasiquote with spread
 
 where do old vnodes go?
 
+so components can work by separating children and results
+  the vnode tree is larger than the dom tree
+  the "attachment node" can be passed down through multiple components
+
 
 I don't know if the lispy editor thingy needs the speed from diffing tbh
 
@@ -304,3 +308,13 @@ problem with diffing children
     
 but first, write a better benchmark
   or rather, just write something interesting until it's laggy
+    pzaz
+  this is a good benchmark though
+    - table elements shouldn't change
+
+there's a weird clunk
+  can't have a list that starts with a text node
+
+
+
+

@@ -21,17 +21,23 @@ function arrwrap(tag, arr) {
 function render() {
   const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+state))
   document.body.innerHTML = `
+    <span>
       <div>
-        <input type='button' value='+' onclick='inc()'/>
-        <input value='${state}' />
         <input type='button' value='-' onclick='dec()'/>
+        <input value='${state}' />
+        <input type='button' value='+' onclick='inc()'/>
       </div>
+      <div style='overflow: scroll; white-space: nowrap; width: 200px'>
+        l${'o'.repeat(100)}ng text
+      </div>
+      ${state % 2 ? 'odd' : '<b>even</b>'}
       <table>
         ${arrwrap('tr', foo.map(x => arrwrap('td', x)))}
       </table>
+      ${arrwrap('i', Array(Math.abs(state)).fill(`${state < 0 ? 'anti-' : ''}bottle `))}
+    </span>
   `;
 }
 
 render();
 
-//wydyaneed message passing
