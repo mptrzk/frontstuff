@@ -267,7 +267,12 @@ would have to use playwright or something
 
 There are 2 problems that vdom libraries are trying to solve:
   - imperative way clunky
-  - declarative way slow
+  - declarative way slow (and breaks things)
+
+imperative
+  change this thing now
+declarative
+  here's how this thing should always be
 
 
 just explicitly memoize what you wanna memoize?
@@ -285,5 +290,17 @@ is replacing the child with itself fast?
 the stupidest way to do it is just returning strings and parsing it all as HTML at the end
 like it's PHP
 
+
 now another mind blowing insight
 html should be just lists
+
+string -> tag
+array -> list of tags
+
+turn the tag into a list and those are the children
+
+problem with diffing children
+  children list is a different object each time the tree is generated
+    
+but first, write a better benchmark
+  or rather, just write something interesting until it's laggy

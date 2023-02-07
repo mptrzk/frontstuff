@@ -19,7 +19,7 @@ function arrwrap(tag, arr) {
 }
 
 function render() {
-  const foo = Array(17).fill().map((x, i) => Array(17).fill().map((x, j) => i+j+state))
+  const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+state))
   document.body.innerHTML = `
       <div>
         <input type='button' value='+' onclick='inc()'/>
