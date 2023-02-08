@@ -103,6 +103,19 @@ no components?
 
 
 ==================================================
+;BENCHMARK
+
+[describe why the benchmark is what it is]
+
+php
+  72ms, 58ms, 56ms, 54ms
+nonv
+  40, 68, 41, 69, 61, 56 
+
+bout' the same
+
+
+==================================================
 ;UNCATEGORIZED
 
 components returning multiple vnodes
@@ -289,6 +302,11 @@ just explicitly memoize what you wanna memoize?
 is replacing the child with itself fast?
 
 
+text with text
+el with el
+  
+el with text
+text with el
 
 
 the stupidest way to do it is just returning strings and parsing it all as HTML at the end

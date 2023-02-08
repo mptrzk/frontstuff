@@ -35,7 +35,7 @@ function display() {
         ['input', {value: state}],
         ['input', {type: 'button', value: '+', onclick: inc}],
       ],
-      ['div', {style:'overflow: scroll; white-space: nowrap; width: 200px'},
+      ['div', {style:'overflow-x: scroll; white-space: nowrap; width: 200px'},
         `l${'o'.repeat(100)}ng text`
       ],
       (state % 2) ? 'odd' : ['b', 'even'],
