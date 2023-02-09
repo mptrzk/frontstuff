@@ -305,24 +305,31 @@ just explicitly memoize what you wanna memoize?
 is replacing the child with itself fast?
 
 
-with el
+with tag
   none 
-    create el, assign props, attach
+    create tag, assign props, attach
   text 
     create text, replace
-  el 
+  tag 
     different type
-      create el, assign props, replace
+      create tag, assign props, replace
     different props
       assign props
 with text
-  text 
-    assign data
-  el 
-    create text, attach
-    replace
   none 
     create text, attach
+  text 
+    assign data
+  tag 
+    create text, attach
+    replace
+
+^^ that's what pattern matching is good for
+
+what if the old vnode has same children as the new one
+  if a tag gets replaced it's children have to be re-attached even if they don't change
+    parentChanged param
+      but it always changes in that case
 
 passing index, root and isNew?
 a function that just creates, but doesn't attach?
