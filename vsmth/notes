@@ -54,6 +54,9 @@ events
 
 event vs 
 
+what are workers anyway?
+  what can be done with them better?
+
 ==================================================
 ;SMALL DOM LIBRARIES
 
@@ -302,11 +305,33 @@ just explicitly memoize what you wanna memoize?
 is replacing the child with itself fast?
 
 
-text with text
-el with el
-  
-el with text
-text with el
+with el
+  none 
+    create el, assign props, attach
+  text 
+    create text, replace
+  el 
+    different type
+      create el, assign props, replace
+    different props
+      assign props
+with text
+  text 
+    assign data
+  el 
+    create text, attach
+    replace
+  none 
+    create text, attach
+
+passing index, root and isNew?
+a function that just creates, but doesn't attach?
+
+
+deleting orphaned nodes
+  for now just delete nodes above the new child count
+
+can use cases for keys be avoided by wrapping stuff in spans?
 
 
 the stupidest way to do it is just returning strings and parsing it all as HTML at the end

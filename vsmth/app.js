@@ -23,28 +23,24 @@ function propsCompare(a, b) {
 }
 
 function makeDom(vnode) {
+  if (typeof(vnode) === 'object') { //TODO redundant condition?
+    let el = document.createElement(vnode.type);
+    Object.assign(el, vnode.props);
+    return el;
+  } else {
+    return document.createTextNode(vnode);
+  }
 }
 
-//also pass parent?
 function diff(vnew, vold, root, idx) {
   let el = root.childNodes?.[idx];
-  if (el === undefined) { //dom object creation - might factor out
-    if (typeof(vnew) === 'object') {
-      el = document.createElement(vnew.type);
-      root.appendChild(el);
-      Object.assign(el, vnew.props);
-      vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
-    } else {
-      root.appendChild(document.createTextNode(vnew));
-    }
+  if (el === undefined) { //change to vold condition?
+    el = makeDom(vnew);
+    root.appendChild(el);  
   } else { //tru diffing down here
-    if (typeof(vnew) === 'object') {
-      const typeChanged = vnew.type !== vold?.type;
-      const propsChanged = propsCompare(vnew.props, vold.props);
-      vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
-    } else {
-      if (vnew !== vold) el.data = vnew; //TODO bottle error
-    }
+  }
+  if (typeof(vnew) === 'object') {
+    vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
   }
 }
 //handling different type and nonexistant elements with optional chaining?
@@ -54,19 +50,6 @@ function render(expr, root) {
   diff(vnew, vdom, root, 0);
   vdom = vnew;
 }
-
-/*
-function render(v, dom) {
-  if (typeof(v) === 'object') {
-    const el = document.createElement(v.type);
-    Object.assign(el, v.props);
-    v.children.map(c => render(c, el));
-    dom.appendChild(el);
-  } else {
-    dom.appendChild(document.createTextNode(v));
-  }
-}
-*/
 
 function Vnode(x) {
   if (Array.isArray(x)) {
