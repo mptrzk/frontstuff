@@ -23,9 +23,9 @@ function render() {
   document.body.innerHTML = `
     <span>
       <div>
-        <input type='button' value='-' onclick='dec()'/>
-        <input value='${state}' />
-        <input type='button' value='+' onclick='inc()'/>
+        <input type='button' value='-' onclick='dec()'>
+        <input value='${state}'>
+        <input type='button' value='+' onclick='inc()'>
       </div>
       <div style='overflow: scroll; white-space: nowrap; width: 200px'>
         l${'o'.repeat(100)}ng text
@@ -34,6 +34,7 @@ function render() {
       <table>
         ${arrwrap('tr', foo.map(x => arrwrap('td', x)))}
       </table>
+      <br>
       ${arrwrap('i', Array(Math.abs(state)).fill(`${state < 0 ? 'anti-' : ''}bottle `))}
     </span>
   `;

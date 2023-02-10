@@ -340,6 +340,16 @@ deleting orphaned nodes
 
 can use cases for keys be avoided by wrapping stuff in spans?
 
+the bug
+  happens when a text node gets replaced by a tag
+  period 4 behavior ???
+  solution
+    element.replaceWith() only fiddles with the element's parent
+    it doesn't mutate the element,
+    it doesn't return anything
+
+
+
 
 the stupidest way to do it is just returning strings and parsing it all as HTML at the end
 like it's PHP

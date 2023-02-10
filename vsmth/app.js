@@ -33,24 +33,24 @@ function makeDom(vnode) { //TODO split to make-tag and make-text?
 }
 
 
-function diff(vnew, vold, root, idx, rootChanged) {
+function diff(vnew, vold, root, idx) {
   let el = root.childNodes?.[idx]; //move down to non-null cases?
-  let elChanged = false;
   if (typeof(vnew) === 'object') {
     if (el === undefined) {//none with tag // //change to vold condition?
       el = makeDom(vnew);
-      elChanged = true; //pro forma? remove?
       root.appendChild(el); //change to index-aware?
     } else {
       if (typeof(vold) === 'object') { //tag with tag
         if (vnew.type !== vold.type) el.replaceWith(makeDom(vnew));
-        elChanged = true;
         if (!propsEqual(vnew.props, vold.props)) Object.assign(el, vnew.props); //redundant sometimes?
       } else { //text with tag
-        el.replaceWith(makeDom(vnew)) //TODO understand the thrown exception before doing that root change stuff
+        el.replaceWith(makeDom(vnew)); //TODO understand the thrown exception before doing that root change stuff
+        el = root.childNodes?.[idx];
       }
     }
-    vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i, elChanged));
+    vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
+    const len = vold?.children ? vold.children.length : 0;
+    for (let i=vnew.children.length; i<len; i++) el.childNodes[i].remove();
     //kill orphans here
   } else {
     if (el === undefined) {//none with text // //change to vold condition?
@@ -77,7 +77,7 @@ function render(expr, root) {
 
 function Vnode(x) {
   if (Array.isArray(x)) {
-    if (x[1].constructor.name === 'Object') {
+    if (x?.[1]?.constructor?.name === 'Object') {
       return {type: x[0], props: x[1], children: x.slice(2).map(Vnode)};
     }
     return {type: x[0], props: {}, children: x.slice(1).map(Vnode)};
@@ -106,8 +106,18 @@ function display() {
           ]
         ), 
       ],
+      ['br'],
       ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `]),
     ];
+  /*
+  const ret =
+    ['span',
+      ['input', {value: state}],
+      ['input', {type: 'button', value: 'bang', onclick: inc}],
+      ['br'],
+      (state % 2) ? 'odd' : ['b', 'even'],
+    ];
+  */
   render(Vnode(ret), document.body);
 }
 

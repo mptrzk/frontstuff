@@ -14,7 +14,7 @@ function dec() {
 function render(x, dom) {
   if (Array.isArray(x)) {
     const el = document.createElement(x[0]);
-    if (x[1].constructor.name === 'Object') {
+    if (x?.[1]?.constructor?.name === 'Object') {
       Object.assign(el, x[1]);
       x.slice(2).map(y => render(y, el));
     } else {
@@ -46,6 +46,7 @@ function display() {
           ]
         ), 
       ],
+      ['br'],
       ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `]),
     ];
   document.body.replaceChildren();
