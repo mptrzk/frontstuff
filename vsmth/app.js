@@ -32,42 +32,44 @@ function makeDom(vnode) { //TODO split to make-tag and make-text?
   }
 }
 
-
+//TODO ponder keys, changing append to insert n' stuff
 function diff(vnew, vold, root, idx) {
-  let el = root.childNodes?.[idx]; //move down to non-null cases?
+  let el = root.childNodes?.[idx];
   if (typeof(vnew) === 'object') {
-    if (el === undefined) {//none with tag // //change to vold condition?
+    if (el === undefined) {
+      /**none with text**/
       el = makeDom(vnew);
-      root.appendChild(el); //change to index-aware?
+      root.appendChild(el); 
     } else {
-      if (typeof(vold) === 'object') { //tag with tag
+      if (typeof(vold) === 'object') {
+        /**tag with tag**/
         if (vnew.type !== vold.type) el.replaceWith(makeDom(vnew));
-        if (!propsEqual(vnew.props, vold.props)) Object.assign(el, vnew.props); //redundant sometimes?
-      } else { //text with tag
-        el.replaceWith(makeDom(vnew)); //TODO understand the thrown exception before doing that root change stuff
-        el = root.childNodes?.[idx];
+        else if (!propsEqual(vnew.props, vold.props)) Object.assign(el, vnew.props); //replace above with makeTag, replace 'else if' with 'if'
+      } else {
+        /**text with tag**/
+        el.replaceWith(makeDom(vnew));
+        el = root.childNodes[idx];
       }
     }
     vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
     const len = vold?.children ? vold.children.length : 0;
     for (let i=vnew.children.length; i<len; i++) el.childNodes[i].remove();
-    //kill orphans here
   } else {
-    if (el === undefined) {//none with text // //change to vold condition?
+    if (el === undefined) {
+      /**none with text**/
       el = makeDom(vnew);
       root.appendChild(el);
     } else {
-      if (typeof(vold) === 'object') { //tag with text
+      if (typeof(vold) === 'object') {
+        /**tag with text**/
         el.replaceWith(makeDom(vnew));
-      } else { //text with text
+      } else {
+        /**text with text**/
         if (vnew !== vold) el.data = vnew;
       }
     }
   }
 }
-//TODO vnode eq to make things faster when stuff doesn't change
-//  yeah, but it would require expression memoization or something
-//handling different type and nonexistant elements with optional chaining?
 
 function render(expr, root) {
   const vnew = Vnode(expr);
@@ -107,17 +109,9 @@ function display() {
         ), 
       ],
       ['br'],
-      ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `]),
+      ['div', ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `])],
+      ['div', ...Array(5000).fill(['span', 'unchanging text '])],
     ];
-  /*
-  const ret =
-    ['span',
-      ['input', {value: state}],
-      ['input', {type: 'button', value: 'bang', onclick: inc}],
-      ['br'],
-      (state % 2) ? 'odd' : ['b', 'even'],
-    ];
-  */
   render(Vnode(ret), document.body);
 }
 

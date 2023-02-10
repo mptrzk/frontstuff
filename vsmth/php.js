@@ -34,8 +34,9 @@ function render() {
       <table>
         ${arrwrap('tr', foo.map(x => arrwrap('td', x)))}
       </table>
+      <div>${arrwrap('i', Array(Math.abs(state)).fill(`${state < 0 ? 'anti-' : ''}bottle `))}</div>
       <br>
-      ${arrwrap('i', Array(Math.abs(state)).fill(`${state < 0 ? 'anti-' : ''}bottle `))}
+      <div>${arrwrap('span', Array(5000).fill('unchanging text '))}</div>
     </span>
   `;
 }

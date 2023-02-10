@@ -47,7 +47,8 @@ function display() {
         ), 
       ],
       ['br'],
-      ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `]),
+      ['div', ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `])],
+      ['div', ...Array(5000).fill(['span', 'unchanging text '])],
     ];
   document.body.replaceChildren();
   render(ret, document.body);

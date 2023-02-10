@@ -378,3 +378,16 @@ there's a weird clunk
 
 
 
+okay, what now
+  - move to another repo
+  - refactor
+      need a fresh eye
+  - write a sensible interface
+    'send' pseudotag
+      so I can finally stop writing javascript
+      but I will be sending state, not view
+  - compare to react/preact
+
+does it work for svg too?
+
+inserting stuff before other stuff sounds like a way for layout recomputation
