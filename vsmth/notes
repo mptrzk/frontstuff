@@ -404,6 +404,22 @@ the radical functional version passes 'send' to the view, because 'send' is a cl
   yes, it is
     how do you get send to change?
   fukit, let's do it imperatively first
-    
+
+even in imperative version, where 'state' is a mutable variable, 'view' and 'update' must be
+parametrized with 'state' and 'send', because they will be callbacks
 
 initializing with 'init' message
+
+lispier expression syntax?
+
+each message forces an update
+  yay
+    no need for pro forma state object update after a mutation
+  nay
+    diffing occurs when a do-nothing message gets sent
+      but do nothing messages shouldn't be sent anyway
+
+memoization
+  memo tag
+  memo prop
+  function tag

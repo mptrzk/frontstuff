@@ -1,106 +1,31 @@
+import {init} from './vsmth.js'
 
-let state = 0;
-let vdom = undefined;
-
-function inc() {
-  state++;
-  display();
-}
-
-function dec() {
-  state--;
-  display();
-}
-
-function propsEqual(a, b) {
-  const ak = Object.keys(a);
-  const bk = Object.keys(b);
-  if (ak.length !== bk.length) return false;
-  for (k of ak) {
-    if (a[k] !== b[k]) return false;
-  }
-  return true;
-}
-
-function makeDom(vnode) { //TODO split to make-tag and make-text?
-  if (typeof(vnode) === 'object') { //TODO redundant condition?
-    let el = document.createElement(vnode.type);
-    Object.assign(el, vnode.props);
-    return el;
-  } else {
-    return document.createTextNode(vnode);
+function update(model, msg) {
+  switch (msg) {
+    case 'init':
+      return 0;
+    case 'inc':
+      return model + 1;
+    case 'dec':
+      return model - 1;
+    default:
+      console.error(`invalid message - ${msg}`);
   }
 }
 
-//TODO ponder keys, changing append to insert n' stuff
-function diff(vnew, vold, root, idx) {
-  let el = root.childNodes?.[idx];
-  if (typeof(vnew) === 'object') {
-    if (el === undefined) {
-      /**none with text**/
-      el = makeDom(vnew);
-      root.appendChild(el); 
-    } else {
-      if (typeof(vold) === 'object') {
-        /**tag with tag**/
-        if (vnew.type !== vold.type) el.replaceWith(makeDom(vnew));
-        else if (!propsEqual(vnew.props, vold.props)) Object.assign(el, vnew.props); //replace above with makeTag, replace 'else if' with 'if'
-      } else {
-        /**text with tag**/
-        el.replaceWith(makeDom(vnew));
-        el = root.childNodes[idx];
-      }
-    }
-    vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
-    const len = vold?.children ? vold.children.length : 0;
-    for (let i=vnew.children.length; i<len; i++) el.childNodes[i].remove();
-  } else {
-    if (el === undefined) {
-      /**none with text**/
-      el = makeDom(vnew);
-      root.appendChild(el);
-    } else {
-      if (typeof(vold) === 'object') {
-        /**tag with text**/
-        el.replaceWith(makeDom(vnew));
-      } else {
-        /**text with text**/
-        if (vnew !== vold) el.data = vnew;
-      }
-    }
-  }
-}
-
-function render(expr, root) {
-  const vnew = Vnode(expr);
-  diff(vnew, vdom, root, 0);
-  vdom = vnew;
-}
-
-function Vnode(x) {
-  if (Array.isArray(x)) {
-    if (x?.[1]?.constructor?.name === 'Object') {
-      return {type: x[0], props: x[1], children: x.slice(2).map(Vnode)};
-    }
-    return {type: x[0], props: {}, children: x.slice(1).map(Vnode)};
-  }
-  return x;
-}
-
-
-function display() {
-  const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+state));
-  const ret =  
+function view(model, send) {
+  const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+model));
+  return (
     ['span',
       ['div',
-        ['input', {type: 'button', value: '-', onclick: dec}],
-        ['input', {value: state}],
-        ['input', {type: 'button', value: '+', onclick: inc}],
+        ['input', {type: 'button', value: '-', onclick: () => send('dec')}],
+        ['input', {value: model}],
+        ['input', {type: 'button', value: '+', onclick: () => send('inc')}],
       ],
       ['div', {style:'overflow-x: scroll; white-space: nowrap; width: 200px'},
         `l${'o'.repeat(100)}ng text`
       ],
-      (state % 2) ? 'odd' : ['b', 'even'],
+      (model % 2) ? 'odd' : ['b', 'even'],
       ['table',
         ...foo.map(row =>
           ['tr',
@@ -109,12 +34,11 @@ function display() {
         ), 
       ],
       ['br'],
-      ['div', ...Array(Math.abs(state)).fill(['i', `${state < 0 ? 'anti-' : ''}bottle `])],
+      ['div', ...Array(Math.abs(model)).fill(['i', `${model < 0 ? 'anti-' : ''}bottle `])],
       ['div', ...Array(5000).fill(['span', 'unchanging text '])],
-    ];
-  render(Vnode(ret), document.body);
+    ]
+  );
 }
 
-display();
-
+init(update, view, document.body);
 
