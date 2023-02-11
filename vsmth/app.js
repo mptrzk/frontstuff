@@ -115,7 +115,6 @@ function display() {
   render(Vnode(ret), document.body);
 }
 
-
-document.body.replaceChildren();
 display();
+
 

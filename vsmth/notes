@@ -109,14 +109,13 @@ no components?
 ;BENCHMARK
 
 [describe why the benchmark is what it is]
+  even, odd
+    all node state transitions 
+  400 table cell changes
+  list of elements that expands and shrinks
 
-php
-  72ms, 58ms, 56ms, 54ms
-nonv
-  40, 68, 41, 69, 61, 56 
-
-bout' the same
-
+==================================================
+;DEPRECATED
 
 ==================================================
 ;UNCATEGORIZED
@@ -391,3 +390,20 @@ okay, what now
 does it work for svg too?
 
 inserting stuff before other stuff sounds like a way for layout recomputation
+
+
+inline vs block display - layout recomputation time 
+
+messages are better than procedure calls, because procedure calls would have to be wrapped with update logic
+
+the radical functional version passes 'send' to the view, because 'send' is a closure around immutable state
+  no, it isn't
+    it just passes 'send', because it's not in the scope where the view expression is compiled
+    - well, can always export 'send'
+    nah, it would be stupd, you don't use it 
+  yes, it is
+    how do you get send to change?
+  fukit, let's do it imperatively first
+    
+
+initializing with 'init' message
