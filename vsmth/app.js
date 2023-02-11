@@ -1,31 +1,50 @@
 import {init} from './vsmth.js'
 
 function update(model, msg) {
-  switch (msg) {
+  const [type, value] = msg;
+  switch (type) {
     case 'init':
-      return 0;
+      return {
+        count: 0,
+        wasTyped: false,
+      }
     case 'inc':
-      return model + 1;
+      model.count++;
+      model.wasTyped = false;
+      return model;
     case 'dec':
-      return model - 1;
+      model.count--;
+      model.wasTyped = false;
+      return model;
+    case 'set':
+      model.count = value;
+      model.wasTyped = true;
+      return model;
     default:
       console.error(`invalid message - ${msg}`);
   }
 }
 
 function view(model, send) {
-  const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+model));
+  const foo = Array(20).fill().map((x, i) => Array(20).fill().map((x, j) => i+j+model.count));
+  const ref = {};
+  function processInput() {
+    const val = parseInt(ref.current.value);
+    if (val === undefined || isNaN(val)) return;
+    send(['set', parseInt(val)]);
+  };
   return (
     ['span',
       ['div',
-        ['input', {type: 'button', value: '-', onclick: () => send('dec')}],
-        ['input', {value: model}],
-        ['input', {type: 'button', value: '+', onclick: () => send('inc')}],
+        ['input', {type: 'button', value: '-', onclick: () => send(['dec'])}],
+        ['input', {value: model.count, ref: ref, oninput: processInput}],
+        ['input', {type: 'button', value: '+', onclick: () => send(['inc'])}],
+        ['input', {type: 'button', value: 'log ref', onclick: () => console.log(ref)}],
       ],
       ['div', {style:'overflow-x: scroll; white-space: nowrap; width: 200px'},
         `l${'o'.repeat(100)}ng text`
       ],
-      (model % 2) ? 'odd' : ['b', 'even'],
+      (model.count % 2) ? 'odd' : ['b', 'even'],
       ['table',
         ...foo.map(row =>
           ['tr',
@@ -34,7 +53,7 @@ function view(model, send) {
         ), 
       ],
       ['br'],
-      ['div', ...Array(Math.abs(model)).fill(['i', `${model < 0 ? 'anti-' : ''}bottle `])],
+      ['div', ...Array(Math.abs(model.count)).fill(['i', `${model.count < 0 ? 'anti-' : ''}bottle `])],
       ['div', ...Array(5000).fill(['span', 'unchanging text '])],
     ]
   );

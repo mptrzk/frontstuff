@@ -38,8 +38,9 @@ function diff(vnew, vold, root, idx) {
       }
     }
     vnew.children.map((c, i) => diff(c, vold?.children?.[i], el, i));
+    if (vnew.ref) vnew.ref.current = el;
     const lenOld = vold?.children ? vold.children.length : 0;
-    for (let i=vnew.children.length; i<lenOld; i++) el.childNodes[i].remove();
+    for (let i=lenOld-1; i>=vnew.children.length; i--) el.childNodes[i].remove();
   } else {
     if (el === undefined) {
       /**none with text**/
@@ -89,7 +90,7 @@ function init(update, view, root) {
     let res = view(model, send);
     render(view(model, send), root);
   }
-  send('init');
+  send(['init']);
 }
 
 export {init};
