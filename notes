@@ -269,8 +269,163 @@ selectable palette for the whole site
 nice graphs
 
 ==================================================
+;WRITEUP
+
+
+problems of web UI development:
+  DOM updates are slow
+    VDOM
+    svelte
+  Imperative DOM manipulation is painful
+    why
+      you've got to think about which stuff depends on the state when you update it
+    why declarativity is better
+      stuff's equivalent to the defining expression
+      stuff's timeless
+        variable values are not time-dependent in a given call context
+    reactivity
+      declarativity seen from imperative world
+          rly? then why there's functional reactive programming?
+            it might be because it's time-conscious
+              what?
+        writing to one variable causes another to update
+        can I write a reactive C library?
+          without nested functions it would suck
+
+
+
+==================================================
 ;UNCATEGORIZED
 
+maybe that copying isn't that bad of a deal
+  the view function that get's called redundantly, does way more writes
+
+what could be stupd about DOM API?
+
+nvsmth
+  static virtual dom?
+  "sub" expression
+    subscribes to publisher
+    updates when publisher publishes
+  how about hidden stuff?
+  just detach/attach
+
+
+selector
+  an object allowing to select a given submodel from a model
+selectors must be replicable
+    to get arround shallow diffing
+  which is kinda meh
+
+"(about q-tic board) it's not a tree! it's a ?compact? DAG"
+  isn't it a rare thing to happen in web apps?
+  isn't that realization meaningless?
+
+vdom as a second class citizen?
+  most things don't require diffing
+
+shitty dom api hypothesis
+
+maybe q-tic is a stupid use case for declarative UI
+  I know exactly which DOM nodes need to be changed to what
+    still, DOM API feels clunky
+      just set the inner HTML
+  but score, reset button could use some reactivity
+    not really, it's a tiny thing
+
+how about ziuziałka?
+  buttons
+  knobs
+
+those reducers, man
+all the redundand wiring, message passing, etc.
+saying the same thing over and over again
+it bothers me to wire stuff over and over again
+  the function that renders the element knows exactly the part of model which needs to be altered
+  it has a pointer to it
+    but the mutability problem
+
+one way it would kinda make sense is:
+  the components don't re-render if the props don't change
+  you only pass the props that are needed to render it
+  no re-renders should happen if the end result doesn't change
+    they have to be either atomic, constant or parts of the model
+      why atomic
+      why constant
+        never cause a re-render
+      why part of the model
+what kind of bugs would occur if mutation happened
+  stuff not rendering when it should
+    because of props not diffing
+
+passing a zipper as a prop?
+  would it cause redundant re-render?
+
+a vnode is an implicit argument of a component
+  rly?
+
+a component is multi-memoized
+
+why does the problem of state m
+
+why am I thinking about all of this?
+  I want to write portable, sandboxable, ephemeral comptuer programs with great, fast UIs
+
+portable
+  can run on almost any modern machine
+
+sandboxable
+  can't mess with other stuff running on the machine
+
+ephemeral
+  can be downloaded, executed and discarded without thinking
+  as if it was plugged and unplugged
+
+what are refs for
+  referring to the future dom nodes at the render time, so they can be accessed at update time
+  by being bound to callbacks which are defined at render time and called at update time
+    is the need for refs a proof that the whole system is shit?
+
+"but f
+
+
+
+maybe it's the reducer lambda that changes over and over again?
+if it's passed as a prop, the component would re-render every time
+
+What I was reacting strongly at was writing boilerplate and immutable copy of a nested array with small changes
+
+immutable element change of m^n array is O(m*n)
+and for my 13*11*3*3 array it's 13+11+3+3 = 30
+
+shouldn't preact just reander wrong stuff if I supply it a mutated array?
+  not if it doesn't diff props in order to evaluate each component
+    like in the thing I wrote
+      maybe that demo was wrong
+
+weird datastructure with mutation flag
+
+figure out whether to bother with immutable datastructures for web UI models
+if so, how to do it painlessly
+q-tic multiple field flip
+  as if +30 writes for a single change wasn't enough
+isn't that what redux is for?
+why does all this voodoo even happen?
+if not, 
+why didn't it cause any errors in q-tic?
+
+check if it's the same for react
+
+minimal reproducible example of:
+  two components with independent props
+
+rendering with array mutation
+  does it work for react too?
+
+If I'm doing stuff that looks overcomplicated inefficient, I want to know exactly why
+
+
+why is layout so slow?
 custom reducer
   overgeneralization?
     write both smart version and a dumb version
