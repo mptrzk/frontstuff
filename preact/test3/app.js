@@ -1,9 +1,8 @@
-import 'https://cdn.skypack.dev/preact/debug';
-import {h, render} from 'https://cdn.skypack.dev/preact';
-import {useState} from 'https://cdn.skypack.dev/preact/hooks'; //development version?
+import {createElement, useState} from 'https://cdn.skypack.dev/react';
+import {render} from 'https://cdn.skypack.dev/react-dom';
 import htm from 'https://cdn.skypack.dev/htm';
 
-const ht = htm.bind(h);
+const ht = htm.bind(createElement);
 
 
 const SampleText = props => {
@@ -15,7 +14,7 @@ const App = props => {
   const [state, setState] = useState(0);
   return ht`
     <h1>Hello ${state}</>
-    <button onclick=${() => setState(state + 1)}>increment</>
+    <button onClick=${() => setState(state + 1)}>increment</>
     <${SampleText}/>
   `; //whyyyy
 }
